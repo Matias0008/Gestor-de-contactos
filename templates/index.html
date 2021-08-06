@@ -1,0 +1,231 @@
+{% extends "layout.html" %}
+
+{% block body %}
+
+<div class="container">
+    <div class="card card-body  text-center mb-4 content-title">
+        <h1>Empresa X</h1>
+    </div>
+
+
+
+    <div class="row">
+        <div class="col md-12 d-flex flex-column ">
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    {{ message }}
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            {% endfor %} 
+        {% endif %}
+        {% endwith %}
+            <h2>Lista de contactos<button type="button" class="btn btn-success float-sm-right contact-btn" style="max-height: 40px;" data-toggle = "modal" data-target = "#mymodal">Añadir contacto</button></h2>
+            <form class="d-flex mt-4 mb-2">
+                <input class="form-control me-2" type="search" placeholder="Buscar contacto" aria-label="Search" id="buscar" name="buscar" value="{% if request.args.get('buscar') != None %}{{ request.args.get('buscar') }}{% endif %}">
+                <button class="btn btn-outline-success ml-4" type="submit">Buscar</button>
+            </form>
+                
+        <div class="table-responsive">
+        <table class="table table-striped table-bordered table-sm shadow bg-white rounded">
+            <thead>
+                <tr>
+                    <td class="shadow bg-white rounded">Nombre</td>
+                    <td class="shadow bg-white rounded">Teléfono</td>
+                    <td class="shadow bg-white rounded">Email</td>
+                    <td class="shadow bg-white rounded">Acción</td>
+                </tr>
+            </thead>
+        <tbody>
+            {% for contact in contacts %}
+            <tr>
+
+                <td>{{ contact["nombre"] }}</td>
+                <td>{{ contact["telefono"] }}</td>
+                <td>{{ contact["email"] }}</td>
+                <td >
+                    <a href="/edit_contact/ {{ contact["id"] }}" class="btn btn-warning btn-sm btn-space">Editar</a>
+                    <a href="/delete_contact/{{ contact["id"] }}" class="btn btn-danger btn-sm">Eliminar</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% if not contacts %}
+        <div class="alert alert-danger" role="alert">
+    Error,  no se encontro el contacto. 
+</div>
+    {% endif %}
+
+    </div>
+        </div>
+    </div>
+
+        <div class="text-center redes">
+        <a href="https://www.instagram.com/mmatidelga2/" target="_BLANK" class="home-redes-icon" style="font-size: 2em;"><i class='bx bxl-instagram' ></i></a>
+        <a href="https://github.com/Matias0008" target="_BLANK" class="home-redes-icon" style="font-size: 2em;"><i class='bx bxl-github' ></i></a> 
+    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
+<div id="mymodal" class="modal fade" role="dialog">
+<div class="modal-dialog">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h4 class="modal-title text-dark">Añadir contacto</h4>
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+        <div class="modal-body">
+             <form action="/add_contact" method="POST">
+            <div class="form-group">
+                <label for="exampleInputName1">Nombre</label>
+                <input type="text" name="nombre" class="form-control" id="exampleInputName1" aria-describedby="emailHelp" placeholder="Nombre" required>
+            </div>
+
+            <div class="form-group">
+                <label for="exampleInputTelefono1">Teléfono</label>
+                <input type="number" name="telefono"  class="form-control" id="exampleInputTelefono1" placeholder="Teléfono" required>
+            </div>
+
+            <div class="form-group">
+                <label for="exampleInputEmail1">Email</label>
+                <input type="email" name="email"  class="form-control" id="exampleInputEmail1" placeholder="Email" required>
+            </div>
+
+            <button type="submit" class="btn btn-primary btn-block">Guardar</button>
+                        <button type="button" class="btn btn-default btn-block" data-dismiss="modal">Cerrar</button>
+            </form>
+
+        </div>
+
+
+
+    </div>
+</div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- <div class="row">
+    <div class="col">
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    {{ message }}
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            {% endfor %} 
+        {% endif %}
+        {% endwith %}
+
+        <div class="card card-body shadow" >
+            <h1 class="text-center">Añadir contacto</h1>
+            <form action="/add_contact" method="POST">
+            <div class="form-group">
+                <label for="exampleInputName1">Nombre</label>
+                <input type="text" name="nombre" class="form-control" id="exampleInputName1" aria-describedby="emailHelp" placeholder="Nombre" required>
+            </div>
+
+            <div class="form-group">
+                <label for="exampleInputTelefono1">Teléfono</label>
+                <input type="number" name="telefono"  class="form-control" id="exampleInputTelefono1" placeholder="Teléfono" required>
+            </div>
+
+            <div class="form-group">
+                <label for="exampleInputEmail1">Email</label>
+                <input type="email" name="email"  class="form-control" id="exampleInputEmail1" placeholder="Email" required>
+            </div>
+
+            <button type="submit" class="btn btn-primary btn-block">Guardar</button>
+            </form>
+        </div>
+    </div>
+
+
+    <div class="col md-10">
+        <div class="table-responsive">
+        <table class="table table-bordered table-sm shadow bg-white rounded">
+            <thead>
+                <tr>
+                    <td class="shadow bg-white rounded">#</td>
+                    <td class="shadow bg-white rounded">Nombre</td>
+                    <td class="shadow bg-white rounded">Teléfono</td>
+                    <td class="shadow bg-white rounded">Email</td>
+                    <td class="shadow bg-white rounded">Acción</td>
+                </tr>
+            </thead>
+        <tbody>
+            {% for contact in contacts %}
+            <tr>
+                <td>{{ contact["id"] }}</td>
+                <td>{{ contact["nombre"] }}</td>
+                <td>{{ contact["telefono"] }}</td>
+                <td>{{ contact["email"] }}</td>
+                <td >
+                    <a href="/edit_contact/ {{ contact["id"] }}" class="btn btn-warning btn-sm btn-space">Editar</a>
+                    <a href="/delete_contact/{{ contact["id"] }}" class="btn btn-danger btn-sm">Eliminar</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    </div>
+
+    </div>
+</div> -->
+
+
+{% endblock %}
